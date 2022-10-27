@@ -51,11 +51,11 @@ export const Icon = styled(Feather)<IconProps>`
     margin-right: 12px;
     color: ${({ theme, type}) => 
         type === 'up' ? theme.colors.green : theme.colors.red};
-    ${({ type, isActive }) => 
+    /* ${({ type, isActive }) => 
         !isActive && type === 'down' && css`
             color: ${({ theme}) => theme.colors.red_light};
         `
-    }
+    } */
 
 
 `
