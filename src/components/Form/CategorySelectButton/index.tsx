@@ -18,7 +18,6 @@ export function CategorySelectButton({
         <Container>
             <Category>{title}</Category>
             <Icon name="chevron-down" />
-
         </Container>
     )
 }
