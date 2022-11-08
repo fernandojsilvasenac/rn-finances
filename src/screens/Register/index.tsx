@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-native';
+import { Alert, Modal } from 'react-native';
 
 import { useForm } from 'react-hook-form';
+import * as Yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+
 import { InputForm } from '../../components/Form/InputForm';
 
 import { Button } from '../../components/Form/Button';
@@ -23,6 +26,18 @@ import {
    amount: string;
  }
 
+ const schema = Yup.object().shape({
+    name: Yup
+    .string()
+    .required('Nome é obrigatório'),
+    amount: Yup
+    .number()
+    .transform((_value, originalValue) => Number(originalValue.replace(/,/,'.')))
+    .typeError('Informe um valor númerico')
+    .positive('O valor não pode ser negativo')
+    .required('O valor é obrigatório')
+ })
+
 export function Register(){
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -35,7 +50,10 @@ export function Register(){
   const {
     control,
     handleSubmit,
-  } = useForm();
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
 
   function handleOpenCategorySelectModal(){
     setCategoryModalOpen(true);
@@ -50,6 +68,12 @@ export function Register(){
   }
 
   function handleRegister(form: FormData){
+    if (!transactionType)
+      return Alert.alert('Selecione o tipo da Transação')
+    
+    if (category.key === 'category')
+      return Alert.alert('Selecione a Categoria')
+
     const data ={
       name: form.name,
       amount: form.amount,
@@ -70,11 +94,16 @@ export function Register(){
               name="name"
               control={control}
               placeholder="Nome"
+              autoCapitalize='sentences'
+              autoCorrect={false}
+              error={errors.name && errors.name.message}
               />
             <InputForm
               name="amount"
               control={control}
               placeholder="Preço"
+              keyboardType='numeric'
+              error={errors.amount && errors.amount.message}
               />
             <TransactionsTypes>
               <TransactionTypeButton 
