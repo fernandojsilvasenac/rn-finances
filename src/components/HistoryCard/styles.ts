@@ -1,7 +1,11 @@
 import styled from 'styled-components/native';
-import { RFValue } from 'react-native-responsive-fontsize';
+import { RFValue, RFPercentage } from 'react-native-responsive-fontsize';
 
-export const Container = styled.View`
+interface ContainerProps{
+    color: string;
+}
+
+export const Container = styled.View<ContainerProps>`
     width:100%;
     background-color: ${ ( {theme}) => theme.colors.shape}
     flex-direction: row;
@@ -10,7 +14,9 @@ export const Container = styled.View`
     border-radius: 5px;
     border-left-width:4px;
 
-    border-left-color: ${( {theme}) => theme.colors.blue }
+    border-left-color: ${( {color}) => color }
+    // margin-bottom: ${RFPercentage(2)}px;
+    margin-bottom: 8px;
 
 `;
 

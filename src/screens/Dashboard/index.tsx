@@ -82,7 +82,7 @@ export function Dashboard() {
       })
 
       setTransactions(transactionsFormatted)
-      console.log(transactionsFormatted)
+      // console.log(transactionsFormatted)
       const total = entriesTotal - expensiveTotal;
 
       setHighlightData({
