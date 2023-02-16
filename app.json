@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": " ",
-    "slug": "goFinances",
+    "name": "rnfinances",
+    "slug": "rnfinances",
+    "scheme": "rnfinances",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
@@ -11,7 +12,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#5636D3"
       },
-      "package": "goFinances.com"
+      "package": "rnfinances.com"
     },
     "splash": {
       "image": "./assets/splash.png",
