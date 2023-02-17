@@ -3,6 +3,7 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native';
 import { DataListProps } from '.';
+import { TouchableOpacity } from 'react-native';
 
 // npm i react-native-iphone-x-helper --save
 // import { getStatusBarHeight } from 'react-native-iphone-x-helper'
@@ -106,3 +107,5 @@ export const LoadContainer = styled.View`
     justify-content: center;
     align-items: center;
 `;
+
+export const LogoutButton = styled.TouchableOpacity``;

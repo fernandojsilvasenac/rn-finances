@@ -9,10 +9,11 @@ import { useAuth } from '../hooks/auth';
 
 export function Routes(){
   const { user } = useAuth();
+  // {user.id ? <AppRoutes/> : <AuthRoutes />}
   
   return(
     <NavigationContainer>
-      {user.id ? <AppRoutes/> : <AuthRoutes />}
+      <AuthRoutes/>
     </NavigationContainer>
   );
 }

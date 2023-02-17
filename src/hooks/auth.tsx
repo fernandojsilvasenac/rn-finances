@@ -2,10 +2,15 @@ import React, {
     createContext, 
     useContext,
     ReactNode,
-    useState
+    useState,
+    useEffect
  } from 'react';
 
 import * as AuthSession from 'expo-auth-session';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const { CLIENT_ID } = process.env;
+const { REDIRECT_URI } = process.env;
 
 interface AuthProviderProps {
     children: ReactNode;
@@ -21,6 +26,7 @@ interface User {
 interface IAuthContentData{
     user: User;
     signInWithGoogle(): Promise<void>;
+    signOut(): Promise<void>;
 }
 
 interface AuthorizationResponse{
@@ -34,11 +40,12 @@ const AuthContext = createContext({} as IAuthContentData);
 
 function AuthProvider({ children }: AuthProviderProps){
     const [user, setUser] = useState<User>({} as User);
+    const [loading, setLoading] = useState(true)
 
     async function signInWithGoogle(){
         try{
-            const CLIENT_ID ='1098531278733-8c3lobkbkvhbhdsva2rcoskj7kfv9r2m.apps.googleusercontent.com';
-            const REDIRECT_URI = 'https://auth.expo.io/@fernandojsilvasenac/rnfinances';
+            // const CLIENT_ID ='1098531278733-8c3lobkbkvhbhdsva2rcoskj7kfv9r2m.apps.googleusercontent.com';
+            // const REDIRECT_URI = 'https://auth.expo.io/@fernandojsilvasenac/rnfinances';
             const RESPONSE_TYPE = 'token';
             const SCOPE = encodeURI('profile email');
 
@@ -47,12 +54,13 @@ function AuthProvider({ children }: AuthProviderProps){
             const response = await AuthSession.startAsync({ authUrl });
 
             console.log(response);
-            // const {type, params } = await AuthSession
-            // .startAsync({ authUrl}) as AuthorizationResponse;
             console.log(response.type)
             console.log(response.params.access_token);
+
+            // const {type, params } = await AuthSession
+            // .startAsync({ authUrl}) as AuthorizationResponse;
             // if(response.type === 'success'){
-            //     const result = await fetch(`https://googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${response.params.access_token}`);
+            //     const result = await fetch(`https://googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
             //     const userInfo = await result.json();
             //     console.log(userInfo);
             //     setUser({
@@ -62,16 +70,36 @@ function AuthProvider({ children }: AuthProviderProps){
             //         photo: userInfo.picture
             //     })
             // }
+            // await AsyncStorage.setItem('@gofinances:user', JSON.stringify(user));
 
         } catch (error) {
             throw new Error(error);
         }
     }
 
+    async function signOut(){
+        setUser({} as User);
+        await AsyncStorage.removeItem('@gofinances:user')
+    }
+
+    // useEffect( () => {
+    //     async function loadStorageDate(): Promise<void>{
+    //         const data = await AsyncStorage.getItem('@gofinances:user')
+    //         if( data ) {
+    //             const userLogged = JSON.parse(data) as User;
+    //             setUser(userLogged);
+    //         }
+    //         setLoading(false)
+    //     }
+    //     loadStorageDate();
+
+    // },[setUser, setLoading])
+    
     return(
         <AuthContext.Provider value={{ 
             user, 
-            signInWithGoogle
+            signInWithGoogle,
+            signOut
         }}>
           { children }
         </AuthContext.Provider>         

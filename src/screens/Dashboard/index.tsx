@@ -5,6 +5,8 @@ import { TransactionCard, TransactionCardProps } from '../../components/Transact
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
+import { useAuth } from '../../hooks/auth';
+
 import { 
   Container, 
   Header,
@@ -20,6 +22,7 @@ import {
   Title,
   TransactionList,
   LoadContainer,
+  LogoutButton,
 
 } from './styles';
 
@@ -42,6 +45,7 @@ export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<DataListProps[]>([])
     const [highlightData, setHighlightData] = useState<HighlightData>({} as HighlightData)
+    const { user, signOut } = useAuth();
 
     function getLastTransactionDate(
       collections: DataListProps[],
@@ -57,7 +61,10 @@ export function Dashboard() {
 
 
     async function loadTransaction(){
-      const dataKey = "@gofinances:transactions";
+      // const dataKey = "@gofinances:transactions";
+      // const response = await AsyncStorage.getItem(dataKey);
+      
+      const dataKey = `@gofinances_@user:${user.id}:moviments`;
       const response = await AsyncStorage.getItem(dataKey);
 
       const transactions = response ? JSON.parse(response) : [];
@@ -159,11 +166,12 @@ export function Dashboard() {
                   />
                   <User>
                     <UserGreething>Olá,</UserGreething>
-                    <UserName>Fernando</UserName>
+                    <UserName>Usuário</UserName>
                   </User>
                 </UserInfo>
-
-                <Icon name="power" />
+                <LogoutButton onPress={signOut}>
+                  <Icon name="power" />
+                </LogoutButton>  
 
               </UserWrapper>
             </Header>
