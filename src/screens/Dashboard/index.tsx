@@ -162,11 +162,11 @@ export function Dashboard() {
               <UserWrapper>
                 <UserInfo>
                   <Photo 
-                    source={ {uri:'https://avatars.githubusercontent.com/u/37640000?v=4'} }
+                    source={ {uri: `${user.photo}`} }
                   />
                   <User>
                     <UserGreething>Olá,</UserGreething>
-                    <UserName>Usuário</UserName>
+                    <UserName>{user.name}</UserName>
                   </User>
                 </UserInfo>
                 <LogoutButton onPress={signOut}>
